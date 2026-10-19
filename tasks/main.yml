@@ -1,4 +1,7 @@
 ---
+- name: Validate role parameters
+  ansible.builtin.include_tasks: assert_role_vars.yml
+
 - name: Print that the sshd variable is deprecated
   when: sshd is defined
   ansible.builtin.debug:
