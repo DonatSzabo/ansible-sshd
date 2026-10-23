@@ -116,7 +116,7 @@ __sshd_socket_bind_ipv6only: false
 # Most of the distribution use sshd daemon directly as a service
 __sshd_systemd_unit: "service"
 
-# sshd_<OptionName> variables, one per meta/options_body entry.
+# BEGIN GENERATED __sshd_option_vars - do not edit by hand
 __sshd_option_vars:
   - sshd_Include
   - sshd_Port
@@ -253,3 +253,4 @@ __sshd_option_vars:
   - sshd_X11Forwarding
   - sshd_X11UseLocalhost
   - sshd_XAuthLocation
+# END GENERATED __sshd_option_vars
