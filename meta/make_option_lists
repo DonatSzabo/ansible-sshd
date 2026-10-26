@@ -203,6 +203,11 @@ def check_argument_specs(srcdir):
     return ok
 
 
+def assigns_param(param, text):
+    """True when text assigns param, not a longer name that contains it."""
+    return re.search(rf"^\s+{re.escape(param)}:", text, re.MULTILINE) is not None
+
+
 def check_test_coverage(srcdir):
     """Check that validated params are tested in tests_invalid_input.yml."""
     assert_path = srcdir.parent / "tasks" / "assert_role_vars.yml"
@@ -222,13 +227,13 @@ def check_test_coverage(srcdir):
         validated.add("sshd_match")
     ok = True
     for param in sorted(validated):
-        if param not in test_text:
+        if not assigns_param(param, test_text):
             print(f"{test_path}: {param} (validated in "
                   f"tasks/assert_role_vars.yml) is not tested")
             ok = False
     body_opts = [f"sshd_{name}" for name, _ in
                  read_options(srcdir / "options_body")]
-    if not any(opt in test_text for opt in body_opts):
+    if not any(assigns_param(opt, test_text) for opt in body_opts):
         print(f"{test_path}: no sshd_<OptionName> from options_body "
               "is tested")
         ok = False
